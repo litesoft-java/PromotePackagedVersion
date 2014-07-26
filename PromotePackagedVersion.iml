@@ -18,6 +18,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="PackagedVersionCommonWithAWS" />
     <orderEntry type="module" module-name="PackagedVersionCommon" />
     <orderEntry type="module-library">
       <library>

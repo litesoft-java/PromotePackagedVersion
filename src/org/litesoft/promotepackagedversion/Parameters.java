@@ -14,33 +14,14 @@ import org.litesoft.server.util.*;
  * As each Argument key starts w/ a unique letter, the 'permutations' option is active.
  * Any non-keyed values are applied in the order above (excess keyed entries are noted, excess non-keyed entries are an Error)
  */
-public class Parameters extends AbstractParameters {
-    private ParameterTarget mTarget = new ParameterTarget();
-    private ParameterDeploymentGroup mDeploymentGroup = new ParameterDeploymentGroup();
-    private ParameterBucket mBucket = new ParameterBucket();
-
+public class Parameters extends AbstractParametersS3 {
     private Parameter<?>[] mParameters = {mTarget, mDeploymentGroup, mBucket};
 
     private ParameterDeploymentGroup mFromDeploymentGroup = new ParameterDeploymentGroup();
 
     public Parameters( ArgsToMap pArgs ) {
+        prepToString( mBucket, mTarget, mFromDeploymentGroup, "->", mDeploymentGroup );
         populate( mParameters, pArgs );
-    }
-
-    public final String getTarget() {
-        return mTarget.get();
-    }
-
-    public String getDeploymentGroup() {
-        return mDeploymentGroup.get();
-    }
-
-    public ParameterBucket getParameterBucket() {
-        return mBucket;
-    }
-
-    public String getBucket() {
-        return mBucket.get();
     }
 
     public String getFromDeploymentGroup() {

@@ -1,13 +1,14 @@
 onejar: PromotePackagedVersion
+main: org.litesoft.promotepackagedversion.PromotePackagedVersion
+
+resources: 
+- LICENSE
 
 dependencies:
 - ../LiteSoftAWS
-- ../PackagedVersionCommon
+- ../PackagedVersionCommonWithAWS
 
 classpath:
 - ../LiteSoftServerUtils/libs|**.jar
 - ../LiteSoftAWS/libs|**.jar
-
-resources: 
-- LICENSE
 

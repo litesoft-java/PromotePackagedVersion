@@ -172,6 +172,7 @@
       <module fileurl="file://$PROJECT_DIR$/../LiteSoftCommonFoundation/LiteSoftCommonFoundation.iml" filepath="$PROJECT_DIR$/../LiteSoftCommonFoundation/LiteSoftCommonFoundation.iml" />
       <module fileurl="file://$PROJECT_DIR$/../LiteSoftServerUtils/LiteSoftServerUtils.iml" filepath="$PROJECT_DIR$/../LiteSoftServerUtils/LiteSoftServerUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PackagedVersionCommon/PackagedVersionCommon.iml" filepath="$PROJECT_DIR$/../PackagedVersionCommon/PackagedVersionCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../PackagedVersionCommonWithAWS/PackagedVersionCommonWithAWS.iml" filepath="$PROJECT_DIR$/../PackagedVersionCommonWithAWS/PackagedVersionCommonWithAWS.iml" />
       <module fileurl="file://$PROJECT_DIR$/PromotePackagedVersion.iml" filepath="$PROJECT_DIR$/PromotePackagedVersion.iml" />
     </modules>
   </component>
@@ -184,6 +185,7 @@
     <mapping directory="$PROJECT_DIR$/../LiteSoftCommonFoundation" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../LiteSoftServerUtils" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../PackagedVersionCommon" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../PackagedVersionCommonWithAWS" vcs="Git" />
   </component>
   <component name="libraryTable">
     <library name="3rdParty">
