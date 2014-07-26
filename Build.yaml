@@ -1,0 +1,13 @@
+onejar: PromotePackagedVersion
+
+dependencies:
+- ../LiteSoftAWS
+- ../PackagedVersionCommon
+
+classpath:
+- ../LiteSoftServerUtils/libs|**.jar
+- ../LiteSoftAWS/libs|**.jar
+
+resources: 
+- LICENSE
+
