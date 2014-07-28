@@ -1,5 +1,6 @@
 package org.litesoft.promotepackagedversion;
 
+import org.litesoft.commonfoundation.base.*;
 import org.litesoft.packageversioned.*;
 import org.litesoft.server.util.*;
 
@@ -15,22 +16,44 @@ import org.litesoft.server.util.*;
  * Any non-keyed values are applied in the order above (excess keyed entries are noted, excess non-keyed entries are an Error)
  */
 public class Parameters extends AbstractParametersS3 {
-    private Parameter<?>[] mParameters = {mTarget, mDeploymentGroup, mBucket};
-
     private ParameterDeploymentGroup mFromDeploymentGroup = new ParameterDeploymentGroup();
 
+    private boolean mMulti;
+    private String mNotDeploymentGroup;
+
     public Parameters( ArgsToMap pArgs ) {
+        mDeploymentGroup = new ParameterDeploymentGroup() {
+            @Override
+            public boolean acceptable( String pValue ) {
+                return "!".equals( pValue ) ||
+                       (ConstrainTo.notNull( pValue ).startsWith( "!" ) ?
+                        super.acceptable( pValue.substring( 1 ) ) :
+                        super.acceptable( pValue ));
+            }
+        };
         prepToString( mBucket, mTarget, mFromDeploymentGroup, "->", mDeploymentGroup );
-        populate( mParameters, pArgs );
+        populate( new Parameter[]{mTarget, mDeploymentGroup, mBucket}, pArgs );
     }
 
     public String getFromDeploymentGroup() {
         return mFromDeploymentGroup.get();
     }
 
+    public boolean nextPair() {
+        if ( mMulti ) {
+            String zFrom = mFromDeploymentGroup.get();
+            if ( !zFrom.equals( mNotDeploymentGroup ) ) {
+                mDeploymentGroup.set( zFrom );
+                return updateFromDeploymentGroup();
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean validate() {
-        if ( validate( mParameters ) ) {
+        if ( validate( mTarget, mBucket ) ) {
+            preprocessDeploymentGroup();
             String zPrevious = DeploymentGroupSet.get().previous( getDeploymentGroup() );
             if ( zPrevious != null ) {
                 mFromDeploymentGroup.set( zPrevious ); // Auto Set the 'From' DeploymentGroup
@@ -38,6 +61,33 @@ public class Parameters extends AbstractParametersS3 {
             }
             throw new IllegalArgumentException( "Can't Promote 'to' the first '" + getDeploymentGroup() +
                                                 "' DeploymentGroup.  Group is: " + DeploymentGroupSet.get() );
+        }
+        return false;
+    }
+
+    private boolean preprocessDeploymentGroup() {
+        DeploymentGroupSet zSet = DeploymentGroupSet.get();
+
+        String zGroup = getDeploymentGroup();
+        if ( "!".equals( zGroup ) ) {
+            mMulti = true;
+            mDeploymentGroup.set( zSet.last() );
+        } else if ( ConstrainTo.notNull( zGroup ).startsWith( "!" ) ) {
+            mMulti = true;
+            mNotDeploymentGroup = zSet.assertMember( zGroup.substring( 1 ) );
+            mDeploymentGroup.set( zSet.last() );
+        } else {
+            mMulti = false;
+            mNotDeploymentGroup = null;
+        }
+        return validate( mDeploymentGroup ) && updateFromDeploymentGroup(); // Note Left to Right!
+    }
+
+    private boolean updateFromDeploymentGroup() {
+        String zPrevious = DeploymentGroupSet.get().previous( getDeploymentGroup() );
+        if ( zPrevious != null ) {
+            mFromDeploymentGroup.set( zPrevious ); // Auto Set the 'From' DeploymentGroup
+            return true;
         }
         return false;
     }

@@ -27,6 +27,11 @@ public class PromotePackagedVersion extends AbstractAppS3<Parameters> {
         public void process() {
             extractVersionAndSet( createPath( mParameters.getFromDeploymentGroup() + ".txt" ) );
             writeDeploymentGroupVersionFiles();
+
+            if (mParameters.nextPair()) {
+                reportAgain();
+                process();
+            }
         }
     }
 }
